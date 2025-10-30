@@ -56,28 +56,28 @@ const levelData = [
 const level = [
     [
     {y: 500, width: levelData[0].distance + canvas.width, height: 100, x: canvas.width / 2 - canvas.width / 2, type: "block"},
-    {x: 500, y: 450, width: 25, height: 25, type: "spike"},
+    {x: 525, y: 475, width: 25, height: 25, type: "spike"},
     {x: 1000, y: 450, width: 250, height: 50, type: "block"},
-    {x: 1250, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 1300, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 1350, y: 450, width: 25, height: 25, type: "spike"},
+    {x: 1275, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 1325, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 1375, y: 475, width: 25, height: 25, type: "spike"},
     {x: 1400, y: 450, width: 250, height: 50, type: "block"},
     {x: 1750, y: 375, width: 100, height: 25, type: "block"},
     {x: 1950, y: 300, width: 100, height: 25, type: "block"},
     {x: 2150, y: 400, width: 50, height: 100, type: "block"},
-    {x: 2200, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 2250, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 2300, y: 450, width: 25, height: 25, type: "spike"},
+    {x: 2225, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 2275, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 2325, y: 475, width: 25, height: 25, type: "spike"},
     {x: 2650, y: 450, width: 50, height: 50, type: "block"},
     {x: 2850, y: 400, width: 50, height: 100, type: "block"},
     {x: 3000, y: 450, width: 50, height: 50, type: "block"},
     {x: 3200, y: 400, width: 50, height: 100, type: "block"},
     {x: 3350, y: 450, width: 50, height: 50, type: "block"},
-    {x: 3400, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 3450, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 3500, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 3750, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 3800, y: 450, width: 25, height: 25, type: "spike"},
+    {x: 3425, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 3475, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 3525, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 3775, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 3825, y: 475, width: 25, height: 25, type: "spike"},
     ],
     [
     {y: 500, width: levelData[1].distance + canvas.width, height: 100, x: canvas.width / 2 - canvas.width / 2, type: "block"},
@@ -89,26 +89,26 @@ const level = [
     {x: 1450, y: 300, width: 50, height: 25, type: "block"},
     {x: 1650, y: 250, width: 50, height: 25, type: "block"},
     {x: 1950, y: 300, width: 350, height: 25, type: "block"},
-    {x: 2050, y: 250, width: 25, height: 25, type: "spike"},
-    {x: 2250, y: 250, width: 25, height: 25, type: "spike"},
+    {x: 2075, y: 275, width: 25, height: 25, type: "spike"},
+    {x: 2275, y: 275, width: 25, height: 25, type: "spike"},
     {x: 2400, y: 350, width: 50, height: 150, type: "block"},
     {x: 2600, y: 400, width: 50, height: 100, type: "block"},
     {x: 2800, y: 450, width: 50, height: 50, type: "block"},
-    {x: 3000, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 3200, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 3250, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 3450, y: 450, width: 25, height: 25, type: "spike"},
+    {x: 3025, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 3225, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 3275, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 3475, y: 475, width: 25, height: 25, type: "spike"},
     {x: 3800, y: 450, width: 50, height: 50, type: "block"},
     {x: 4000, y: 495, width: 50, height: 5, type: "jumpad"},
     {x: 4200, y: 350, width: 50, height: 150, type: "block"},
-    {x: 4250, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 4300, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 4350, y: 450, width: 25, height: 25, type: "spike"},
+    {x: 4275, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4325, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4375, y: 475, width: 25, height: 25, type: "spike"},
     {x: 4450, y: 495, width: 50, height: 5, type: "jumpad"},
     {x: 4600, y: 495, width: 50, height: 5, type: "jumpad"},
-    {x: 4750, y: 495, width: 50, height: 5, type: "jumpad"},
-    {x: 4850, y: 450, width: 25, height: 25, type: "spike"},
-    {x: 4950, y: 450, width: 25, height: 25, type: "spike"},
+    {x: 4775, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4875, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4975, y: 475, width: 25, height: 25, type: "spike"},
     ],
     [
     {y: 500, width: levelData[2].distance + canvas.width, height: 100, x: canvas.width / 2 - canvas.width / 2, type: "block"},
@@ -172,9 +172,9 @@ function updateGame(deltaTime) {
 
     if (input.getKeyDown(Keys.W) || input.getKeyDown(Keys.Space) || input.getMouseButtonDown(MouseButtons.Left)) {
         if(allowJump === "yes") {
-        velocity.y = -10;
-        allowJump = "no"
-        }
+            velocity.y = -10;
+            allowJump = "no"
+        }   
     }
 
     velocity.y += gravity
