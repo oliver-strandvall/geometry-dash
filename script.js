@@ -103,16 +103,20 @@ const level = [
     {x: 4200, y: 350, width: 50, height: 150, type: "block"},
     {x: 4275, y: 475, width: 25, height: 25, type: "spike"},
     {x: 4325, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 4375, y: 475, width: 25, height: 25, type: "spike"},
     {x: 4450, y: 495, width: 50, height: 5, type: "jumpad"},
-    {x: 4600, y: 495, width: 50, height: 5, type: "jumpad"},
-    {x: 4775, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 4875, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 4975, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4650, y: 495, width: 50, height: 5, type: "jumpad"},
+    {x: 4750, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4800, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4850, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4850, y: 300, width: 50, height: 50, type: "jumpblock", radius: 25},
+    {x: 4900, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4950, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 5000, y: 475, width: 25, height: 25, type: "spike"},
     ],
     [
     {y: 500, width: levelData[2].distance + canvas.width, height: 100, x: canvas.width / 2 - canvas.width / 2, type: "block"},
     {x: 500, y: 495, width: 50, height: 5, type: "jumpad"},
+    {x: 700, y: 300, width: 50, height: 50, type: "jumpblock", radius: 25},
     ]
 ]
 
@@ -195,6 +199,10 @@ function updateGame(deltaTime) {
             } else if(level[selectedLevel][i].type === "jumpad") {
                 velocity.y = -15;
                 allowJump = "no"
+            } else if(level[selectedLevel][i].type === "jumpblock") {
+                if (input.getKeyDown(Keys.W) || input.getKeyDown(Keys.Space) || input.getMouseButtonDown(MouseButtons.Left)) {
+                    velocity.y = -10; 
+                }
             }
         }
     }
@@ -259,6 +267,14 @@ function renderGame() {
         if(level[selectedLevel][i].type === "jumpad") {
             ctx.fillStyle = "rgba(255, 235, 0, 1)"
             ctx.fillRect(level[selectedLevel][i].x - cameraX, level[selectedLevel][i].y, level[selectedLevel][i].width, level[selectedLevel][i].height)
+        }
+
+        if(level[selectedLevel][i].type === "jumpblock") {
+            ctx.fillStyle = "rgba(255, 234, 0, 0.35)"
+            ctx.beginPath();
+            ctx.arc(level[selectedLevel][i].x - cameraX, level[selectedLevel][i].y, level[selectedLevel][i].radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.closePath();
         }
     }
 
