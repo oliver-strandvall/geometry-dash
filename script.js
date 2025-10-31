@@ -14,6 +14,7 @@ let scrollSpeed = 5;
 let allowJump = "no"
 let selectedLevel = 0
 let collisiondebug = 0
+let defaultcolor = "rgba(65, 90, 140, 1)"
 
 let player = {
     x: 0,
@@ -48,9 +49,9 @@ let menuRight = {
 // };
 
 const levelData = [
-    {level: 1, distance: 4000, best: 0, cleared: "no", attempts: 0, levelname: "Easy"},
-    {level: 2, distance: 6000, best: 0, cleared: "no", attempts: 0, levelname: "Medium"},
-    {level: 3, distance: 8000, best: 0, cleared: "no", attempts: 0, levelname: "Master"}
+    {level: 1, distance: 4000, best: 0, cleared: "no", attempts: 0, levelname: "Easy", levelcolor: "rgba(35, 65, 115, 1)"},
+    {level: 2, distance: 6000, best: 0, cleared: "no", attempts: 0, levelname: "Medium", levelcolor: "rgba(75, 35, 115, 1)"},
+    {level: 3, distance: 8000, best: 0, cleared: "no", attempts: 0, levelname: "Master", levelcolor: "rgba(35, 35, 115, 1)"}
 ]
 
 const level = [
@@ -112,6 +113,10 @@ const level = [
     {x: 4900, y: 475, width: 25, height: 25, type: "spike"},
     {x: 4950, y: 475, width: 25, height: 25, type: "spike"},
     {x: 5000, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 5200, y: 495, width: 50, height: 5, type: "jumpad"},
+    {x: 5400, y: 350, width: 50, height: 50, type: "block"},
+    {x: 5650, y: 300, width: 50, height: 50, type: "jumpblock", radius: 25},
+    {x: 5850, y: 350, width: 500 + canvas.width, height: 150, type: "block"},
     ],
     [
     {y: 500, width: levelData[2].distance + canvas.width, height: 100, x: canvas.width / 2 - canvas.width / 2, type: "block"},
@@ -132,11 +137,11 @@ gameLoop(performance.now());
 function gameLoop(timestamp) {
     input.update();
 
+    ctx.fillStyle = levelData[selectedLevel].levelcolor;
+    ctx.fillRect(0, 0, 800, 600);
+
     // const deltaTime = (currentTime - lastTime) / 1000;
     // lastTime = currentTime;
-
-    ctx.fillStyle = "rgba(65, 90, 140, 1)";
-    ctx.fillRect(0, 0, 800, 600);
 
     if(currentScene === "gameplay") {
         updateGame(timestamp)
@@ -230,6 +235,10 @@ function updateGame(deltaTime) {
 }
 
 function renderGame() {
+
+    ctx.fillStyle = levelData[selectedLevel].levelcolor;
+    ctx.fillRect(0, 0, 800, 600);
+
     const cameraX = player.x - 80
 
     // Paint player
@@ -389,12 +398,14 @@ function updateGameStart() {
     }
     }
 
-    ctx.fillStyle = "rgba(65, 90, 140, 1)";
+    ctx.fillStyle = "rgba(0, 0, 0, 1)";
     ctx.fillRect(200, 150, 400, 250)
     ctx.strokeRect(200, 150, 400, 250)
     ctx.textAlign = "center";
-    ctx.fillStyle = "rgba(0, 0, 0, 1)";
-    ctx.fillText(levelData[selectedLevel].levelname, canvas.width / 2, canvas.height / 3);
+    ctx.fillStyle = "rgba(255, 255, 255, 1)";
+    ctx.font = "40px Arial";
+    ctx.fillText(levelData[selectedLevel].levelname, canvas.width / 2, canvas.height / 2.25);
+    ctx.font = "25px Arial";
         if(levelData[selectedLevel].cleared === "yes") {
             ctx.fillStyle = "rgba(65, 200, 0, 1)";
             ctx.fillText("Level Cleared! | Total Attempts: " + levelData[selectedLevel].attempts, canvas.width / 2, canvas.height / 1.4)
