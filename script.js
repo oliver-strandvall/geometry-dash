@@ -11,10 +11,9 @@ const MenuButton = new Button(input, {x: canvas.width / 2 - 100, y: canvas.heigh
 const ctx = canvas.getContext("2d")
 
 let scrollSpeed = 5;
-let allowJump = "no"
+let allowJump = false
 let selectedLevel = 0
 let collisiondebug = 0
-let defaultcolor = "rgba(65, 90, 140, 1)"
 
 let player = {
     x: 0,
@@ -57,28 +56,28 @@ const levelData = [
 const level = [
     [
     {y: 500, width: levelData[0].distance + canvas.width, height: 100, x: canvas.width / 2 - canvas.width / 2, type: "block"},
-    {x: 525, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 525, y: 450, width: 50, height: 50, type: "spike"},
     {x: 1000, y: 450, width: 250, height: 50, type: "block"},
-    {x: 1275, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 1325, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 1375, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 1250, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 1300, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 1350, y: 450, width: 50, height: 50, type: "spike"},
     {x: 1400, y: 450, width: 250, height: 50, type: "block"},
     {x: 1750, y: 375, width: 100, height: 25, type: "block"},
     {x: 1950, y: 300, width: 100, height: 25, type: "block"},
     {x: 2150, y: 400, width: 50, height: 100, type: "block"},
-    {x: 2225, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 2275, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 2325, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 2200, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 2250, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 2300, y: 450, width: 50, height: 50, type: "spike"},
     {x: 2650, y: 450, width: 50, height: 50, type: "block"},
     {x: 2850, y: 400, width: 50, height: 100, type: "block"},
     {x: 3000, y: 450, width: 50, height: 50, type: "block"},
     {x: 3200, y: 400, width: 50, height: 100, type: "block"},
     {x: 3350, y: 450, width: 50, height: 50, type: "block"},
-    {x: 3425, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 3475, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 3525, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 3775, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 3825, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 3400, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 3450, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 3500, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 3750, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 3800, y: 450, width: 50, height: 50, type: "spike"},
     ],
     [
     {y: 500, width: levelData[1].distance + canvas.width, height: 100, x: canvas.width / 2 - canvas.width / 2, type: "block"},
@@ -90,29 +89,29 @@ const level = [
     {x: 1450, y: 300, width: 50, height: 25, type: "block"},
     {x: 1650, y: 250, width: 50, height: 25, type: "block"},
     {x: 1950, y: 300, width: 350, height: 25, type: "block"},
-    {x: 2075, y: 275, width: 25, height: 25, type: "spike"},
-    {x: 2275, y: 275, width: 25, height: 25, type: "spike"},
+    {x: 2050, y: 250, width: 50, height: 50, type: "spike"},
+    {x: 2250, y: 250, width: 50, height: 50, type: "spike"},
     {x: 2400, y: 350, width: 50, height: 150, type: "block"},
     {x: 2600, y: 400, width: 50, height: 100, type: "block"},
     {x: 2800, y: 450, width: 50, height: 50, type: "block"},
-    {x: 3025, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 3225, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 3275, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 3475, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 3050, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 3250, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 3300, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 3500, y: 450, width: 50, height: 50, type: "spike"},
     {x: 3800, y: 450, width: 50, height: 50, type: "block"},
     {x: 4000, y: 495, width: 50, height: 5, type: "jumpad"},
     {x: 4200, y: 350, width: 50, height: 150, type: "block"},
-    {x: 4275, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 4325, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4250, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4300, y: 450, width: 50, height: 50, type: "spike"},
     {x: 4450, y: 495, width: 50, height: 5, type: "jumpad"},
-    {x: 4650, y: 495, width: 50, height: 5, type: "jumpad"},
-    {x: 4750, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 4800, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 4850, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4625, y: 495, width: 50, height: 5, type: "jumpad"},
+    {x: 4725, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4775, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4825, y: 450, width: 50, height: 50, type: "spike"},
     {x: 4850, y: 300, width: 50, height: 50, type: "jumpblock", radius: 25},
-    {x: 4900, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 4950, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 5000, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 4875, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4925, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4975, y: 450, width: 50, height: 50, type: "spike"},
     {x: 5200, y: 495, width: 50, height: 5, type: "jumpad"},
     {x: 5400, y: 350, width: 50, height: 50, type: "block"},
     {x: 5650, y: 300, width: 50, height: 50, type: "jumpblock", radius: 25},
@@ -124,35 +123,73 @@ const level = [
     {x: 700, y: 400, width: 50, height: 100, type: "block"},
     {x: 950, y: 350, width: 50, height: 50, type: "jumpblock", radius: 25},
     {x: 1150, y: 350, width: 50, height: 150, type: "block"},
-    {x: 1225, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 1275, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 1325, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 1375, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 1200, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 1250, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 1300, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 1350, y: 450, width: 50, height: 50, type: "spike"},
     {x: 1375, y: 250, width: 50, height: 50, type: "jumpblock", radius: 25},
-    {x: 1425, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 1475, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 1525, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 1575, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 1400, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 1450, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 1500, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 1550, y: 450, width: 50, height: 50, type: "spike"},
     {x: 1600, y: 300, width: 50, height: 200, type: "block"},
-    {x: 1675, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 1725, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 1650, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 1700, y: 450, width: 50, height: 50, type: "spike"},
     {x: 1800, y: 200, width: 50, height: 50, type: "jumpblock", radius: 25},
     {x: 2000, y: 250, width: 50, height: 200, type: "block"},
     {x: 2000, y: 245, width: 50, height: 5, type: "jumpad"},
     {x: 2200, y: 495, width: 50, height: 5, type: "jumpad"},
-    {x: 2300, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 2350, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 2400, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 2275, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 2325, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 2375, y: 450, width: 50, height: 50, type: "spike"},
     {x: 2425, y: 400, width: 50, height: 100, type: "block"},
-    {x: 2500, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 2550, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 2600, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 2650, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 2700, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 2475, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 2525, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 2575, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 2625, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 2675, y: 450, width: 50, height: 50, type: "spike"},
     {x: 2850, y: 400, width: 50, height: 50, type: "block"},
-    {x: 3000, y: 475, width: 25, height: 25, type: "spike"},
-    {x: 3050, y: 475, width: 25, height: 25, type: "spike"},
+    {x: 2975, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 3025, y: 450, width: 50, height: 50, type: "spike"},
     {x: 3075, y: 450, width: 50, height: 50, type: "block"},
+    {x: 3275, y: 400, width: 50, height: 100, type: "block"},
+    {x: 3525, y: 300, width: 50, height: 50, type: "jumpblock", radius: 25},
+    {x: 3725, y: 300, width: 50, height: 50, type: "jumpblock", radius: 25},
+    {x: 3925, y: 300, width: 50, height: 50, type: "jumpblock", radius: 25},
+    {x: 4100, y: 350, width: 50, height: 150, type: "block"},
+    {x: 4300, y: 200, width: 50, height: 150, type: "block"},
+    {x: 4400, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4450, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4500, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4575, y: 495, width: 50, height: 5, type: "jumpad"},
+    {x: 4650, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4700, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4750, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4800, y: 450, width: 50, height: 50, type: "spike"},
+    {x: 4850, y: 400, width: 50, height: 100, type: "block"},
+    {x: 5150, y: 400, width: 1000, height: 100, type: "block"},
+    {x: 5150, y: 0, width: 1000, height: 275, type: "block"},
+    {x: 5350, y: 350, width: 50, height: 50, type: "spike"},
+    {x: 5400, y: 350, width: 50, height: 50, type: "spike"},
+    {x: 5450, y: 350, width: 50, height: 50, type: "spike"},
+    {x: 5600, y: 275, width: 50, height: 50, type: "block"},
+    {x: 5825, y: 350, width: 50, height: 50, type: "spike"},
+    {x: 5975, y: 275, width: 50, height: 50, type: "block"},
+    {x: 6100, y: 350, width: 50, height: 50, type: "spike"},
+    {x: 6250, y: 200, width: 50, height: 50, type: "jumpblock", radius: 25},
+    {x: 6400, y: 125, width: 50, height: 50, type: "jumpblock", radius: 25},
+    {x: 6550, y: 50, width: 50, height: 50, type: "jumpblock", radius: 25},
+    {x: 6800, y: 200, width: 50, height: 300, type: "block"},
+    {x: 6975, y: 300, width: 50, height: 25, type: "block"},
+    {x: 7200, y: 225, width: 50, height: 25, type: "block"},
+    {x: 7375, y: 300, width: 50, height: 25, type: "block"},
+    {x: 7600, y: 225, width: 50, height: 25, type: "block"},
+    {x: 7775, y: 300, width: 50, height: 25, type: "block"},
+    {x: 7850, y: 375, width: 50, height: 25, type: "block"},
+    {x: 8025, y: 450, width: 50, height: 25, type: "block"},
+    {x: 8250, y: 300, width: 50, height: 200, type: "block"},
+    {x: 8250, y: 0, width: 50, height: 200, type: "block"},
+    {x: 8450, y: 300, width: 500, height: 200, type: "block"},
     ]
 ]
 
@@ -200,7 +237,14 @@ function updateGame(deltaTime) {
 
     // Check Collisions
     for(let i = 0; i < level[selectedLevel].length; i++) {
-        if(isOverlapping(player, level[selectedLevel][i])) {
+        const other = level[selectedLevel][i].type === "spike" ? {
+            x: level[selectedLevel][i].x + 10,
+            y: level[selectedLevel][i].y + 10,
+            width: level[selectedLevel][i].width - 10,
+            height: level[selectedLevel][i].height - 10
+        } : level[selectedLevel][i];
+
+        if(isOverlapping(player, other)) {
             if(level[selectedLevel][i].type === "block") {
                 if(player.x > levelData[selectedLevel].best) {
                     levelData[selectedLevel].best = player.x
@@ -210,11 +254,10 @@ function updateGame(deltaTime) {
         }
     }
 
-    if (input.getKeyDown(Keys.W) || input.getKeyDown(Keys.Space) || input.getMouseButtonDown(MouseButtons.Left)) {
-        if(allowJump === "yes") {
-            velocity.y = -10;
-            allowJump = "no"
-        }   
+    // console.log(allowJump)
+    if (allowJump && (input.getKey(Keys.W) || input.getKey(Keys.Space) || input.getMouseButton(MouseButtons.Left))) {
+        velocity.y = -10;
+        allowJump = false
     }
 
     velocity.y += gravity
@@ -222,7 +265,14 @@ function updateGame(deltaTime) {
 
     // Check collision
     for(let i = 0; i < level[selectedLevel].length; i++) {
-        if(isOverlapping(player, level[selectedLevel][i])) {
+        const other = level[selectedLevel][i].type === "spike" ? {
+            x: level[selectedLevel][i].x + 10,
+            y: level[selectedLevel][i].y + 10,
+            width: level[selectedLevel][i].width - 10,
+            height: level[selectedLevel][i].height - 10
+        } : level[selectedLevel][i];
+
+        if(isOverlapping(player, other)) {
             if(level[selectedLevel][i].type === "spike") {
                    if(player.x > levelData[selectedLevel].best) {
                         levelData[selectedLevel].best = player.x
@@ -230,11 +280,11 @@ function updateGame(deltaTime) {
             restartGame()
             } else if(level[selectedLevel][i].type === "block") {
                 velocity.y = 0
-                allowJump = "yes"
+                allowJump = true
                 fixOverlapY(player, level[selectedLevel][i])
             } else if(level[selectedLevel][i].type === "jumpad") {
                 velocity.y = -15;
-                allowJump = "no"
+                allowJump = false
             } else if(level[selectedLevel][i].type === "jumpblock") {
                 if (input.getKeyDown(Keys.W) || input.getKeyDown(Keys.Space) || input.getMouseButtonDown(MouseButtons.Left)) {
                     velocity.y = -10; 
@@ -287,8 +337,8 @@ function renderGame() {
         if(level[selectedLevel][i].type === "spike") {
             ctx.fillStyle = "rgba(0, 0, 0, 1)"
             ctx.beginPath()
-            ctx.moveTo(level[selectedLevel][i].x - cameraX, level[selectedLevel][i].y - level[selectedLevel][i].height)
-            ctx.lineTo(level[selectedLevel][i].x - level[selectedLevel][i].width - cameraX, level[selectedLevel][i].y + level[selectedLevel][i].height)
+            ctx.moveTo(level[selectedLevel][i].x + level[selectedLevel][i].width / 2 - cameraX, level[selectedLevel][i].y)
+            ctx.lineTo(level[selectedLevel][i].x - cameraX, level[selectedLevel][i].y + level[selectedLevel][i].height)
             ctx.lineTo(level[selectedLevel][i].x + level[selectedLevel][i].width - cameraX, level[selectedLevel][i].y + level[selectedLevel][i].height)
             ctx.closePath()
             ctx.fill()
@@ -388,10 +438,10 @@ function updateGameStart() {
         ctx.fillStyle = "rgba(0, 0, 0, 1)"
     }
 
-    if(input.mousePosition.x > menuLeft.x - menuLeft.width / 2 &&
-        input.mousePosition.x < menuLeft.x + menuLeft.width / 2 &&
-        input.mousePosition.y > menuLeft.y - menuLeft.height / 2 &&
-        input.mousePosition.y < menuLeft.y + menuLeft.height / 2 &&
+    if(input.mousePosition.x > menuLeft.x - menuLeft.width &&
+        input.mousePosition.x < menuLeft.x + menuLeft.width &&
+        input.mousePosition.y > menuLeft.y - menuLeft.height &&
+        input.mousePosition.y < menuLeft.y + menuLeft.height &&
         input.getMouseButtonDown(MouseButtons.Left)
     ) {
         selectedLevel--
@@ -419,9 +469,9 @@ function updateGameStart() {
     }
 
     if(
-        input.mousePosition.x > menuRight.x - menuRight.width / 2 &&
-        input.mousePosition.x < menuRight.x + menuRight.width / 2 &&
-        input.mousePosition.y > menuRight.y - menuRight.height / 2 &&
+        input.mousePosition.x > menuRight.x - menuRight.width &&
+        input.mousePosition.x < menuRight.x + menuRight.width &&
+        input.mousePosition.y > menuRight.y - menuRight.height &&
         input.mousePosition.y < menuRight.y + menuRight.height &&
         input.getMouseButtonDown(MouseButtons.Left)
     ) {
