@@ -2,7 +2,6 @@ import Input, { Keys, MouseButtons } from './input.js';
 import Button from './button.js';
 const canvas = document.getElementById("canvas");
 const input = new Input(canvas);
-const restartButton = new Button(input, {x: canvas.width / 2 - 100, y: canvas.height / 1.35, text: "Restart", fillColor: "rgba(75, 145, 250, 1)", hoverFillColor: "rgba(45, 145, 250, 1)"});
 const StartButton = new Button(input, {x: canvas.width / 2 - 100, y: canvas.height / 1.35, text: "Start", fillColor: "rgba(75, 145, 250, 1)", hoverFillColor: "rgba(45, 145, 250, 1)"});
 const MenuButton = new Button(input, {x: canvas.width / 2 - 100, y: canvas.height / 1.35, text: "Menu", fillColor: "rgba(75, 145, 250, 1)", hoverFillColor: "rgba(45, 145, 250, 1)"});
 /**
@@ -13,7 +12,6 @@ const ctx = canvas.getContext("2d")
 let scrollSpeed = 5;
 let allowJump = false
 let selectedLevel = 0
-let collisiondebug = 0
 
 let player = {
     x: 0,
@@ -40,17 +38,10 @@ let menuRight = {
     height: 50,
 }
 
-// const spikeHitbox = {
-//     x: spike.x - spike.width,
-//     y: spike.y - spike.height,
-//     width: spike.width * 2,
-//     height: spike.height
-// };
-
 const levelData = [
     {level: 1, distance: 4000, best: 0, cleared: "no", attempts: 0, levelname: "Easy", levelcolor: "rgba(35, 65, 115, 1)"},
     {level: 2, distance: 6000, best: 0, cleared: "no", attempts: 0, levelname: "Medium", levelcolor: "rgba(75, 35, 115, 1)"},
-    {level: 3, distance: 8000, best: 0, cleared: "no", attempts: 0, levelname: "Master", levelcolor: "rgba(35, 35, 115, 1)"}
+    {level: 3, distance: 8500, best: 0, cleared: "no", attempts: 0, levelname: "Master", levelcolor: "rgba(35, 35, 115, 1)"}
 ]
 
 const level = [
@@ -157,7 +148,7 @@ const level = [
     {x: 3725, y: 300, width: 50, height: 50, type: "jumpblock", radius: 25},
     {x: 3925, y: 300, width: 50, height: 50, type: "jumpblock", radius: 25},
     {x: 4100, y: 350, width: 50, height: 150, type: "block"},
-    {x: 4300, y: 200, width: 50, height: 150, type: "block"},
+    {x: 4300, y: 0, width: 50, height: 350, type: "block"},
     {x: 4400, y: 450, width: 50, height: 50, type: "spike"},
     {x: 4450, y: 450, width: 50, height: 50, type: "spike"},
     {x: 4500, y: 450, width: 50, height: 50, type: "spike"},
@@ -185,11 +176,10 @@ const level = [
     {x: 7375, y: 300, width: 50, height: 25, type: "block"},
     {x: 7600, y: 225, width: 50, height: 25, type: "block"},
     {x: 7775, y: 300, width: 50, height: 25, type: "block"},
-    {x: 7850, y: 375, width: 50, height: 25, type: "block"},
-    {x: 8025, y: 450, width: 50, height: 25, type: "block"},
-    {x: 8250, y: 300, width: 50, height: 200, type: "block"},
-    {x: 8250, y: 0, width: 50, height: 200, type: "block"},
-    {x: 8450, y: 300, width: 500, height: 200, type: "block"},
+    {x: 7950, y: 375, width: 50, height: 25, type: "block"},
+    {x: 8200, y: 350, width: 50, height: 200, type: "block"},
+    {x: 8200, y: 0, width: 50, height: 200, type: "block"},
+    {x: 8500, y: 350, width: 1000, height: 200, type: "block"},
     ]
 ]
 
@@ -254,7 +244,6 @@ function updateGame(deltaTime) {
         }
     }
 
-    // console.log(allowJump)
     if (allowJump && (input.getKey(Keys.W) || input.getKey(Keys.Space) || input.getMouseButton(MouseButtons.Left))) {
         velocity.y = -10;
         allowJump = false
@@ -305,14 +294,6 @@ function updateGame(deltaTime) {
         }
         currentScene = "gamestart"
     }
-
-    if(input.getKeyDown(Keys.D)) {
-        if(collisiondebug === 0) {
-            collisiondebug = 1 
-        } else {
-            collisiondebug = 0
-        }
-    }
 }
 
 function renderGame() {
@@ -342,16 +323,6 @@ function renderGame() {
             ctx.lineTo(level[selectedLevel][i].x + level[selectedLevel][i].width - cameraX, level[selectedLevel][i].y + level[selectedLevel][i].height)
             ctx.closePath()
             ctx.fill()
-            if(collisiondebug === 1) {
-                ctx.fillStyle = "rgba(255, 0, 0, 1)"
-                ctx.fillRect(
-                    level[selectedLevel][i].x - cameraX - level[selectedLevel][i].width,
-                    level[selectedLevel][i].y - level[selectedLevel][i].height,
-                    level[selectedLevel][i].width * 2,
-                    level[selectedLevel][i].height
-                );
-                ctx.fillStyle = "rgba(0, 0, 0, 1)"
-            }
         }
 
         if(level[selectedLevel][i].type === "jumpad") {
@@ -369,48 +340,28 @@ function renderGame() {
     }
 
     ctx.font = "50px Arial";
-    ctx.fillStyle = "rgba(0, 0, 0, 1)";
+    ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.textAlign = "center";
-    ctx.fillText(player.x + " / " + levelData[selectedLevel].distance, canvas.width / 2, canvas.height / 4);
+    ctx.fillText(player.x + " / " + levelData[selectedLevel].distance, canvas.width / 2, 100);
     ctx.textAlign = "left"
+    ctx.fillStyle = "rgba(0, 0, 0, 1)";
     ctx.font = "40px Arial";
     ctx.fillText("Exit (E)", 15, 40)
-}
 
-function updategameOver() {
-
-    ctx.fillStyle = "rgba(0, 0, 0, 1)"
-    ctx.fillRect(level[selectedLevel][0].x, level[selectedLevel][0].y, level[selectedLevel][0].width, level[selectedLevel][0].height)
-
-    restartButton.draw(ctx);
     ctx.font = "50px Arial";
     ctx.fillStyle = "rgba(0, 0, 0, 1)";
-    ctx.textAlign = "center";
-    ctx.fillText("Game Over!", canvas.width / 2, canvas.height / 2.5,);
-    ctx.textAlign = "left"
-
-    if(restartButton.clicked()) {
-        restartGame()
-    }
+    ctx.fillText("Attempt: " + levelData[selectedLevel].attempts, 250 - cameraX, 250)
 }
 
 function updateGameStart() {
 
     ctx.fillStyle = "rgba(0, 0, 0, 1)"
     ctx.fillRect(level[selectedLevel][0].x, level[selectedLevel][0].y, level[selectedLevel][0].width, level[selectedLevel][0].height)
-
-    if(input.getKeyDown(Keys.D)) {
-        if(collisiondebug === 0) {
-            collisiondebug = 1 
-        } else {
-            collisiondebug = 0
-        }
-    }
     
     StartButton.draw(ctx);
 
     ctx.font = "50px Arial";
-    ctx.fillStyle = "rgba(0, 0, 0, 1)";
+    ctx.fillStyle = "rgba(0, 0, 0, 1)"
     ctx.textAlign = "center";
     ctx.fillText("Choose Level", canvas.width / 2, canvas.height / 5);
     ctx.font = "40px Arial";
@@ -426,17 +377,6 @@ function updateGameStart() {
     ctx.lineTo(menuLeft.x + menuLeft.width, menuLeft.y + menuLeft.height);
     ctx.closePath()
     ctx.fill()
-
-    if(collisiondebug === 1) {
-        ctx.fillStyle = "rgba(255, 0, 0, 1)"
-        ctx.fillRect(
-            menuLeft.x - menuLeft.width / 2,
-            menuLeft.y - menuLeft.height / 2,
-            menuLeft.width,
-            menuLeft.height
-        );
-        ctx.fillStyle = "rgba(0, 0, 0, 1)"
-    }
 
     if(input.mousePosition.x > menuLeft.x - menuLeft.width &&
         input.mousePosition.x < menuLeft.x + menuLeft.width &&
@@ -456,17 +396,6 @@ function updateGameStart() {
     ctx.lineTo(menuRight.x - menuRight.width, menuRight.y - menuRight.height);
     ctx.closePath()
     ctx.fill()
-
-    if(collisiondebug === 1) {
-        ctx.fillStyle = "rgba(255, 0, 0, 1)"
-        ctx.fillRect(
-            menuRight.x - menuRight.width / 2,
-            menuRight.y - menuRight.height / 2,
-            menuRight.width,
-            menuRight.height
-        );
-        ctx.fillStyle = "rgba(0, 0, 0, 1)"
-    }
 
     if(
         input.mousePosition.x > menuRight.x - menuRight.width &&
@@ -493,14 +422,14 @@ function updateGameStart() {
         } else {
             if(selectedLevel > 0) {
                 if(levelData[selectedLevel - 1].cleared === "yes") {
-                    ctx.fillStyle = "rgba(0, 0, 0, 1)";
+                    ctx.fillStyle = "rgba(255, 255, 255, 1)";
                     ctx.fillText("Best: " + levelData[selectedLevel].best + " / " + levelData[selectedLevel].distance + " | Attempts: " + levelData[selectedLevel].attempts, canvas.width / 2, canvas.height / 1.4)
                 } else {
                     ctx.fillStyle = "rgba(255, 0, 0, 1)";
                     ctx.fillText("Complete Previous Level To Unlock" ,canvas.width / 2, canvas.height / 1.4)
                 }
             } else {
-                ctx.fillStyle = "rgba(0, 0, 0, 1)";
+                ctx.fillStyle = "rgba(255, 255, 255, 1)";
                 ctx.fillText("Best: " + levelData[selectedLevel].best + " / " + levelData[selectedLevel].distance + " | Attempts: " + levelData[selectedLevel].attempts, canvas.width / 2, canvas.height / 1.4)
             }
         }
@@ -508,9 +437,9 @@ function updateGameStart() {
 
     if(StartButton.clicked()) {
         if(selectedLevel > 0) {
-            // if(levelData[selectedLevel - 1].cleared === "yes") {
+            if(levelData[selectedLevel - 1].cleared === "yes") {
                 restartGame()
-            // }
+            }
         } else {
             restartGame()
         }
@@ -525,10 +454,11 @@ function updatelevelCleared() {
     MenuButton.draw(ctx);
 
     ctx.font = "50px Arial";
-    ctx.fillStyle = "rgba(0, 0, 0, 1)";
+    ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.textAlign = "center";
     ctx.fillText("Level Cleared!", canvas.width / 2, canvas.height / 2.5,);
     ctx.textAlign = "left"
+    ctx.fillStyle = "rgba(0, 0, 0, 1)"
 
     if(MenuButton.clicked()) {
         toMenu()
@@ -544,20 +474,6 @@ function updatelevelCleared() {
 
 //     } else if(value < min) {
 //         return min
-//     }
-// }
-
-// Collision check
-// function checkCollision(pipe) {
-//   // Player hit top/bottom of pipe
-//   if (
-//     player.x + player.radius > pipe.x &&
-//     player.x - player.radius < pipe.x + pipeWidth
-//   ) {
-//     if (player.y - player.radius < pipe.topHeight ||
-//         player.y + player.radius > pipe.bottomY) {
-//             return true;
-//         }
 //     }
 // }
 
@@ -602,11 +518,6 @@ function isOverlapping(rect1, rect2) {
         return false
    }
 }
-
-// input.mousePosition.x > menuRight.x - menuRight.width / 2 &&
-// input.mousePosition.x < menuRight.x + menuRight.width / 2 &&
-// input.mousePosition.y > menuRight.y - menuRight.height / 2 &&
-// input.mousePosition.y < menuRight.y + menuRight.height &&
 
 function fixOverlapY(rect1, rect2) {
     let rect1middle = rect1.y + rect1.height / 2
